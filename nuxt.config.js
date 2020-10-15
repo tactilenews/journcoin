@@ -1,3 +1,6 @@
+const name = 'JournCoin'
+const lang = 'de'
+
 export default {
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
@@ -59,7 +62,15 @@ export default {
   build: {},
 
   pwa: {
-    name: 'JournCoin',
-    lang: 'de',
+    meta: {
+      theme_color: '#FFF',
+      name,
+      lang,
+    },
+    manifest: {
+      short_name: name,
+      name,
+      lang,
+    },
   },
 }
