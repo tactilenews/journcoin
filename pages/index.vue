@@ -6,6 +6,7 @@
         <v-card-text>
           <p>Journcoin is a new digital currency for journalism.</p>
         </v-card-text>
+        <qrcode-stream @decode="onDecode"></qrcode-stream>
         <v-card-actions>
           <v-spacer />
           <v-btn color="primary" nuxt to="#"> Continue </v-btn>
@@ -14,3 +15,15 @@
     </v-col>
   </v-row>
 </template>
+
+<script lang="ts">
+import Vue from 'vue'
+
+export default Vue.extend({
+  methods: {
+    onDecode(decodedString: string) {
+      console.log('decodedString', decodedString)
+    },
+  },
+})
+</script>
