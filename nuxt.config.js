@@ -1,6 +1,8 @@
+import tailwindTypography from '@tailwindcss/typography'
 const name = 'JournCoin'
 const lang = 'de'
-const metaDescription = 'JournCoin ist die neue Währung für guten Journalismus. Hol dir deine gratis Story!'
+const metaDescription =
+  'JournCoin ist die neue Währung für guten Journalismus. Hol dir deine gratis Story!'
 
 export default {
   // Target (https://go.nuxtjs.dev/config-target)
@@ -21,7 +23,7 @@ export default {
   css: [],
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
-  plugins: [],
+  plugins: [{ src: '@/plugins/qrCodeReader.js', mode: 'client' }],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
   components: true,
@@ -68,5 +70,11 @@ export default {
       name,
       lang,
     },
-  }
+  },
+
+  tailwindcss: {
+    config: {
+      plugins: [tailwindTypography],
+    },
+  },
 }
