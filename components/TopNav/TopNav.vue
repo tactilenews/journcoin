@@ -63,7 +63,7 @@ import MobileMenu from '~/components/MobileMenu/MobileMenu.vue'
 import Icon from '~/components/Icon/Icon.vue'
 
 export const links = [
-  { name: 'Dashboard', to: '#' },
+  { name: 'QR code scannen', to: '/' },
   { name: 'Team', to: '#' },
   { name: 'Projects', to: '#' },
 ]

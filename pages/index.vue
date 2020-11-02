@@ -10,7 +10,7 @@
         </p>
       </article>
       <div class="max-w-md">
-        <QrCodeScanner />
+        <QrCodeScanner @earn="$router.push('/article')" />
       </div>
     </div>
   </PageWrapper>
