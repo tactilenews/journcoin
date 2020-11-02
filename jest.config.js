@@ -14,4 +14,5 @@ module.exports = {
     '<rootDir>/components/**/*.vue',
     '<rootDir>/pages/**/*.vue',
   ],
+  setupFiles: ['<rootDir>/utils/tests/setup-jest.js'],
 }
