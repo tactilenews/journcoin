@@ -77,4 +77,8 @@ export default {
       plugins: [tailwindTypography],
     },
   },
+
+  storybook: {
+    addons: ['@storybook/addon-a11y'],
+  },
 }
