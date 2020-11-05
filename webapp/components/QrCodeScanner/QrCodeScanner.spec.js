@@ -8,9 +8,9 @@ localVue.use(VueQrcodeReader)
 describe('validJournCoin', () => {
   describe('given URL', () => {
     const urls = {
-      'https://journcoin.org/coin/42': '42',
-      'https://journcoin.org/coin/abcde': 'abcde',
-      'https://journcoin.org/wrong/route/42': false,
+      'https://app.journcoin.de/coin/42': '42',
+      'https://app.journcoin.de/coin/abcde': 'abcde',
+      'https://app.journcoin.de/wrong/route/42': false,
       whatever: false,
       'https://some-random-domain.org/coin/42': false,
     }
@@ -51,7 +51,7 @@ describe('QrCodeScanner', () => {
       }
 
       describe('QR code is invalid', () => {
-        beforeEach(() => (url = 'https://journcoin.org/42'))
+        beforeEach(() => (url = 'https://app.journcoin.de/42'))
 
         it('emits no event', async () => {
           const wrapper = await qrCodeScanned()
@@ -60,7 +60,7 @@ describe('QrCodeScanner', () => {
       })
 
       describe('QR code is valid', () => {
-        beforeEach(() => (url = 'https://journcoin.org/coin/abcde'))
+        beforeEach(() => (url = 'https://app.journcoin.de/coin/abcde'))
 
         it('$emits "earn"', async () => {
           const wrapper = await qrCodeScanned()

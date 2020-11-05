@@ -5,6 +5,9 @@ on: [push, pull_request]
 jobs:
   ci:
     runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        working-directory: webapp
 
     strategy:
       matrix:

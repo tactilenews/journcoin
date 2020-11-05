@@ -2,9 +2,7 @@
   <PageWrapper title="Artikel lesen">
     <article class="prose py-6">
       <h1>{{ article.title }}</h1>
-      <p>
-        {{ article.description }}
-      </p>
+      <nuxt-content :document="article" />
     </article>
   </PageWrapper>
 </template>

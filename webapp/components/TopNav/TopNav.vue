@@ -31,10 +31,11 @@
           <div class="hidden md:block">
             <div class="ml-4 flex items-center md:ml-6">
               <button
-                class="p-1 border-2 border-transparent text-gray-400 rounded-full hover:text-white focus:outline-none focus:text-white focus:bg-gray-700"
+                class="p-1 border-2 border-transparent text-yellow-600 rounded-full hover:text-yellow-500 focus:outline-none focus:text-yellow-500 focus:bg-gray-700 flex items-center"
                 aria-label="Notifications"
               >
-                <Icon name="bell" />
+                <Icon name="journcoin" />
+                <span class="text-xl">{{ coins.length }}</span>
               </button>
 
               <!-- Profile dropdown -->
@@ -64,8 +65,7 @@ import Icon from '~/components/Icon/Icon.vue'
 
 export const links = [
   { name: 'QR code scannen', to: '/' },
-  { name: 'Team', to: '#' },
-  { name: 'Projects', to: '#' },
+  { name: 'Artikel wählen', to: '/article' },
 ]
 
 export default {
@@ -75,6 +75,7 @@ export default {
     Icon,
   },
   data: () => ({
+    coins: [null, null, null, null],
     links,
     isOpen: false,
     user: {

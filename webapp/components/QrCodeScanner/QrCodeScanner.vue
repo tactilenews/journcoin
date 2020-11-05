@@ -10,7 +10,10 @@
 export const validJournCoin = (decodedString) => {
   try {
     const url = new URL(decodedString)
-    if (url.hostname !== 'journcoin.org' || !url.pathname.startsWith('/coin'))
+    if (
+      url.hostname !== 'app.journcoin.de' ||
+      !url.pathname.startsWith('/coin')
+    )
       return false
     const [, , ...tail] = url.pathname.split('/')
     return tail.join('/')
