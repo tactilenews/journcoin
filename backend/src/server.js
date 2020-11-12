@@ -1,4 +1,5 @@
-import setupSchema from './schema';
+import { ApolloServer } from 'apollo-server';
+import Schema from './schema';
 
 const playground = {
   settings: {
@@ -6,8 +7,8 @@ const playground = {
   },
 };
 
-export default async function setupServer(ApolloServer) {
-  const schema = await setupSchema();
+export default async () => {
+  const schema = await Schema();
   const server = new ApolloServer({ schema, playground });
   return server;
-}
+};
