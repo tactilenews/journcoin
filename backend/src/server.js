@@ -1,14 +1,7 @@
-import { ApolloServer } from 'apollo-server';
 import Schema from './schema';
 
-const playground = {
-  settings: {
-    'schema.polling.enable': false,
-  },
-};
-
-export default async () => {
+export default async (ApolloServer, opts) => {
   const schema = await Schema();
-  const server = new ApolloServer({ schema, playground });
+  const server = new ApolloServer({ schema, ...opts });
   return server;
 };

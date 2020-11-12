@@ -1,5 +1,5 @@
 import {
-  rule, shield, and, or, not, allow, deny,
+  shield, allow, deny,
 } from 'graphql-shield';
 
 const permissions = shield({

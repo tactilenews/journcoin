@@ -2,6 +2,7 @@ service: apollo-lambda
 plugins:
   - serverless-offline
   - serverless-bundle
+  - serverless-dotenv-plugin
 provider:
   name: aws
   region: eu-central-1
