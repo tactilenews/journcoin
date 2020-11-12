@@ -81,4 +81,8 @@ export default {
   storybook: {
     addons: ['@storybook/addon-a11y'],
   },
+
+  publicRuntimeConfig: {
+    baseURL: process.env.BASE_URL || 'http://localhost:3000'
+  }
 }
