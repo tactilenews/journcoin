@@ -2,6 +2,8 @@ import { createTestClient } from 'apollo-server-testing';
 import { ApolloServer, gql } from 'apollo-server';
 import Server from './server';
 
+jest.mock('./graphCms/schema');
+
 let query;
 
 beforeEach(async () => {
