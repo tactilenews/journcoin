@@ -10,11 +10,11 @@
 </template>
 
 <script>
-import VueQrcode from '@chenfengyuan/vue-qrcode';
+import VueQrcode from '@chenfengyuan/vue-qrcode'
 
 export default {
   components: {
-    VueQrcode
+    VueQrcode,
   },
   async asyncData({ $content, params, $config }) {
     const { slug } = params

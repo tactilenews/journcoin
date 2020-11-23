@@ -10,10 +10,6 @@ const playground = {
 (async () => {
   const server = await Server(ApolloServer, { playground });
   const { url } = await server.listen();
+  // eslint-disable-next-line no-console
   console.log(`🚀  Server ready at ${url}`);
-  process.on('SIGINT', () => {
-    console.log('\nGracefully shutting down from SIGINT (Ctrl-C)');
-    // some other closing procedures go here
-    process.exit(1);
-  });
 })();
