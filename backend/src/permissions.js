@@ -1,6 +1,10 @@
 import {
-  shield, allow, deny,
+  rule, shield, allow, deny,
 } from 'graphql-shield';
+
+const isAuthenticated = rule({ cache: 'contextual' })(
+  async (parent, args, context) => !!context.authorId,
+);
 
 const permissions = shield({
   Query: {
@@ -10,8 +14,7 @@ const permissions = shield({
     people: allow,
   },
   Mutation: {
-    createJournCoin: allow,
-    buy: allow,
+    buy: isAuthenticated,
     '*': deny,
   },
 }, {

@@ -7,7 +7,7 @@ jest.mock('./graphCms/schema');
 let query;
 
 beforeEach(async () => {
-  const server = await new Server(ApolloServer);
+  const server = await new Server(ApolloServer, { context: () => {} });
   const testClient = createTestClient(server);
   query = testClient.query;
 });

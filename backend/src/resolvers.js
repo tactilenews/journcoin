@@ -1,7 +1,5 @@
 import { delegateToSchema } from '@graphql-tools/delegate';
 
-const userId = 'ckhv9ba5c153m0a56nc6fqkay';
-
 export default (subschema) => ({
   Query: {
     hello: () => 'Hello',
@@ -15,7 +13,7 @@ export default (subschema) => ({
         data: {
           token: args.token,
           article: { connect: { id: args.id } },
-          owner: { connect: { id: userId } },
+          owner: { connect: { id: context.authorId } },
         },
       },
       context,
