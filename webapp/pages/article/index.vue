@@ -13,15 +13,31 @@
 </template>
 
 <script>
+import gql from 'graphql-tag'
 import ArticlePreview from '@/components/ArticlePreview/ArticlePreview.vue'
+
+const ARTICLE_PREVIEW = gql`
+  query {
+    articles(stage: DRAFT, locales: en) {
+      id
+      title
+      teaser
+      journCoins {
+        id
+        owner {
+          name
+        }
+      }
+    }
+  }
+`
 
 export default {
   components: {
     ArticlePreview,
   },
-  async asyncData({ $content }) {
-    const articles = await $content('articles').fetch()
-    return { articles }
+  apollo: {
+    articles: ARTICLE_PREVIEW,
   },
   methods: {
     choose(slug) {

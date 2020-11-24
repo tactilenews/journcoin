@@ -48,6 +48,8 @@ export default {
     '@nuxtjs/pwa',
     // https://go.nuxtjs.dev/content
     '@nuxt/content',
+    // https://github.com/nuxt-community/apollo-module
+    '@nuxtjs/apollo',
   ],
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
@@ -84,5 +86,13 @@ export default {
 
   publicRuntimeConfig: {
     baseURL: process.env.BASE_URL || 'http://localhost:3000',
+  },
+
+  apollo: {
+    clientConfigs: {
+      default: {
+        httpEndpoint: 'http://localhost:4000',
+      },
+    },
   },
 }
