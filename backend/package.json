@@ -11,6 +11,7 @@
     "sls:deploy": "serverless deploy"
   },
   "dependencies": {
+    "@graphql-tools/delegate": "^7.0.5",
     "@graphql-tools/graphql-file-loader": "^6.2.6",
     "@graphql-tools/load": "^6.2.5",
     "@graphql-tools/schema": "^7.0.0",

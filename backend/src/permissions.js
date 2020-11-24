@@ -7,8 +7,11 @@ const permissions = shield({
     '*': deny,
     hello: allow,
     articles: allow,
+    people: allow,
   },
   Mutation: {
+    createJournCoin: allow,
+    buy: allow,
     '*': deny,
   },
 }, {
