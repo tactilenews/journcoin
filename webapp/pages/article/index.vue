@@ -21,6 +21,7 @@ const ARTICLE_PREVIEW = gql`
     articles(stage: DRAFT, locales: en) {
       id
       title
+      slug
       teaser
       journCoins {
         id

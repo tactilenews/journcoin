@@ -3,6 +3,16 @@ import { delegateToSchema } from '@graphql-tools/delegate';
 export default (subschema) => ({
   Query: {
     hello: () => 'Hello',
+    profile: (parent, args, context, info) => delegateToSchema({
+      schema: subschema,
+      operation: 'query',
+      fieldName: 'person',
+      args: {
+        where: { id: context.person.id },
+      },
+      context,
+      info,
+    }),
     read: (parent, args, context, info) => delegateToSchema({
       schema: subschema,
       operation: 'query',
@@ -23,7 +33,7 @@ export default (subschema) => ({
         data: {
           token: args.token,
           article: { connect: { id: args.id } },
-          owner: { connect: { id: context.authorId } },
+          owner: { connect: { id: context.person.id } },
         },
       },
       context,

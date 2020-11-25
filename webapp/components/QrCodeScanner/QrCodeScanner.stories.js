@@ -4,14 +4,14 @@ export default {
   title: 'QR Code Scanner',
   component: QrCodeScanner,
   argTypes: {
-    earn: { action: 'earn' },
+    parse: { action: 'parse' },
   },
 }
 
 const Template = (args, { argTypes }) => ({
   props: Object.keys(argTypes),
   components: { QrCodeScanner },
-  template: '<QrCodeScanner @earn="earn" v-bind="$props" />',
+  template: '<QrCodeScanner @parse="parse" v-bind="$props" />',
 })
 
 export const Default = Template.bind({})

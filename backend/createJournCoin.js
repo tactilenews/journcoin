@@ -1,11 +1,13 @@
 const jsonwebtoken = require('jsonwebtoken');
-
 require('dotenv').config();
 
-const [payload] = process.argv.slice(2);
+const { JWT_SECRET, URL = 'http://localhost:3000' } = process.env;
 
-const { JWT_SECRET } = process.env;
-const signed = jsonwebtoken.sign(JSON.parse(payload), JWT_SECRET);
+const [personId] = process.argv.slice(2);
+const randomId = require('crypto').randomBytes(64).toString('base64');
+
+const payload = personId ? { person: { id: personId } } : { coin: { id: randomId } };
+const jwt = jsonwebtoken.sign(payload, JWT_SECRET);
 
 // eslint-disable-next-line no-console
-console.log(JSON.stringify({ authorization: `Bearer ${signed}` }));
+console.log(`${URL}/?jwt=${jwt}`);

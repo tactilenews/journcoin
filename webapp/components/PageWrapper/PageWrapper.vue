@@ -8,7 +8,9 @@
       </div>
     </header>
     <main>
-      <div class="flex justify-center max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+      <div
+        class="flex flex-col items-center max-w-7xl mx-auto py-6 sm:px-6 lg:px-8"
+      >
         <slot></slot>
       </div>
     </main>

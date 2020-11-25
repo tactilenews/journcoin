@@ -10,24 +10,19 @@
 export const validJournCoin = (decodedString) => {
   try {
     const url = new URL(decodedString)
-    if (
-      url.hostname !== 'app.journcoin.de' ||
-      !url.pathname.startsWith('/coin')
-    )
-      return false
-    const [, , ...tail] = url.pathname.split('/')
-    return tail.join('/')
+    if (url.hostname !== 'app.journcoin.de') return null
+    return url.searchParams.get('jwt')
   } catch (e) {
-    return false
+    return null
   }
 }
 
 export default {
   methods: {
     onDecode(decodedString) {
-      const coin = validJournCoin(decodedString)
-      if (!coin) return false
-      this.$emit('earn', coin)
+      const decoded = validJournCoin(decodedString)
+      if (!decoded) return false
+      this.$emit('parse', decoded)
     },
   },
 }

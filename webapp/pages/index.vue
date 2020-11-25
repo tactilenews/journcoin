@@ -10,17 +10,31 @@
         </p>
       </article>
       <div class="max-w-md">
-        <QrCodeScanner @earn="$router.push('/article')" />
+        <QrCodeScanner @parse="dispatch" />
       </div>
     </div>
   </PageWrapper>
 </template>
 
 <script>
+import decode from 'jwt-decode'
 import PageWrapper from '~/components/PageWrapper/PageWrapper.vue'
 import QrCodeScanner from '~/components/QrCodeScanner/QrCodeScanner.vue'
 
 export default {
   components: { PageWrapper, QrCodeScanner },
+  mounted() {
+    const { jwt } = this.$route.query
+    if (jwt) this.dispatch(jwt)
+  },
+  methods: {
+    async dispatch(jwt) {
+      const { person } = decode(jwt)
+      if (person) {
+        await this.$apolloHelpers.onLogin(jwt)
+        this.$router.push('/profile')
+      }
+    },
+  },
 }
 </script>

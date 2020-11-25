@@ -1,4 +1,4 @@
-import { createLocalVue, mount, shallowMount } from '@vue/test-utils'
+import { createLocalVue, shallowMount } from '@vue/test-utils'
 import VueQrcodeReader from 'vue-qrcode-reader'
 import QrCodeScanner, { validJournCoin } from './QrCodeScanner.vue'
 
@@ -8,37 +8,30 @@ localVue.use(VueQrcodeReader)
 describe('validJournCoin', () => {
   describe('given URL', () => {
     const urls = {
-      'https://app.journcoin.de/coin/42': '42',
-      'https://app.journcoin.de/coin/abcde': 'abcde',
-      'https://app.journcoin.de/wrong/route/42': false,
-      whatever: false,
-      'https://some-random-domain.org/coin/42': false,
+      'https://app.journcoin.de/?jwt=42': '42',
+      'https://app.journcoin.de/?wrong=42': null,
+      'https://app.journcoin.de/wrong/route/42': null,
+      whatever: null,
+      'https://some-random-domain.org/coin/42': null,
     }
 
     for (const url in urls) {
-      it(`returns ${urls[url]} for ${url}`, () => {
+      it(`returns ${JSON.stringify(urls[url])} for ${url}`, () => {
         expect(validJournCoin(url)).toEqual(urls[url])
       })
     }
 
-    it('returns false for undefined', () => {
-      expect(validJournCoin(undefined)).toEqual(false)
+    it('returns null for undefined', () => {
+      expect(validJournCoin(undefined)).toEqual(null)
     })
 
-    it('returns false for null', () => {
-      expect(validJournCoin(null)).toEqual(false)
+    it('returns null for null', () => {
+      expect(validJournCoin(null)).toEqual(null)
     })
   })
 })
 
 describe('QrCodeScanner', () => {
-  describe('mount', () => {
-    it('is a Vue instance', () => {
-      const wrapper = mount(QrCodeScanner, { localVue })
-      expect(wrapper.vm).toBeTruthy()
-    })
-  })
-
   describe('shallowMount', () => {
     describe('when QR is scanned', () => {
       let url
@@ -59,12 +52,12 @@ describe('QrCodeScanner', () => {
         })
       })
 
-      describe('QR code is valid', () => {
-        beforeEach(() => (url = 'https://app.journcoin.de/coin/abcde'))
+      describe('QR code represents valid JournCoin', () => {
+        beforeEach(() => (url = 'https://app.journcoin.de/?jwt=abcde'))
 
-        it('$emits "earn"', async () => {
+        it('$emits "parse" with QR encoded JWT', async () => {
           const wrapper = await qrCodeScanned()
-          expect(wrapper.emitted('earn')).toEqual([['abcde']])
+          expect(wrapper.emitted()).toEqual({ parse: [['abcde']] })
         })
       })
     })

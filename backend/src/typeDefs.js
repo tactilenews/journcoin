@@ -4,6 +4,7 @@ const typeDefs = gql`
 type Query {
   hello: String
   read(id: ID!): Article
+  profile: Person
 }
 
 type Mutation {

@@ -51,7 +51,7 @@
 
 <script>
 export const links = [
-  { name: 'Your Profile', to: '#' },
+  { name: 'Your Profile', to: '/profile' },
   { name: 'Settings', to: '#' },
   { name: 'Sign out', to: '#' },
 ]
