@@ -9,9 +9,12 @@
     </header>
     <main>
       <div class="container mx-auto">
-        <slot></slot>
+        <slot name="default"></slot>
       </div>
     </main>
+    <footer>
+      <slot name="footer"></slot>
+    </footer>
   </div>
 </template>
 

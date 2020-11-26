@@ -14,7 +14,6 @@ export const mutations = {
 
 export const actions = {
   nuxtServerInit({ commit }, context) {
-    console.log('nuxtServerInit')
     commit('setAuthenticated', context.app.$apolloHelpers.getToken())
   },
 }

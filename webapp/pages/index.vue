@@ -24,7 +24,10 @@
         </strong>
       </div>
     </div>
-    <Navigation v-if="isAuthenticated" :links="links" />
+
+    <template v-slot:footer>
+      <Navigation v-if="isAuthenticated" :links="links" />
+    </template>
   </PageWrapper>
 </template>
 

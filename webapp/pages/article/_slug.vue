@@ -1,45 +1,48 @@
 <template>
   <PageWrapper title="Artikel lesen">
-    <Icon
-      v-if="$apollo.queries.read.loading"
-      class="h-10 w-10 animate-spin"
-      name="spinner"
-    />
-    <article v-else class="prose py-6">
-      <h1>{{ read.title }}</h1>
-      <p>{{ read.teaser }}</p>
-      <VueQrcode :value="link" :options="{ width: 200 }"></VueQrcode>
-      <nuxt-content :document="read" />
-    </article>
-    <Navigation :links="links" />
+    <ApolloQuery
+      :query="READ"
+      :variables="{ slug }"
+      notify-on-network-status-change
+    >
+      <template v-slot="{ result: { loading, error, data } }">
+        <div class="flex flex-col items-center">
+          <Spinner v-if="loading" />
+          <div v-if="error" class="error apollo">An error occurred</div>
+          <template v-else-if="data">
+            <article class="prose py-6">
+              <h1>{{ data.read.title }}</h1>
+              <p>{{ data.read.teaser }}</p>
+              <VueQrcode
+                :value="articleLink"
+                :options="{ width: 200 }"
+              ></VueQrcode>
+              <nuxt-content :document="data.read" />
+            </article>
+          </template>
+        </div>
+      </template>
+    </ApolloQuery>
+    <template v-slot:footer>
+      <Navigation :links="links" />
+    </template>
   </PageWrapper>
 </template>
 
 <script>
 import VueQrcode from '@chenfengyuan/vue-qrcode'
+import { ApolloQuery } from 'vue-apollo'
 import { READ } from '~/graphql/queries'
 import Navigation from '~/components/Navigation/Navigation.vue'
+import Spinner from '~/components/Spinner/Spinner.vue'
 
 export default {
-  components: { Navigation, VueQrcode },
-  apollo: {
-    read: {
-      query: READ,
-      variables() {
-        const { slug } = this.$route.params
-        return { slug }
-      },
-    },
-  },
+  components: { ApolloQuery, Spinner, Navigation, VueQrcode },
   asyncData({ params, $config }) {
     const { slug } = params
-    const link = `${$config.URL}/article/${slug}`
-    return { link }
-  },
-  data() {
-    return {
-      links: [{ to: '/article', label: 'Zurück zur Artikel-Übersicht' }],
-    }
+    const articleLink = `${$config.URL}/article/${slug}`
+    const links = [{ to: '/article', label: 'Zurück zur Artikel-Übersicht' }]
+    return { articleLink, links, slug, READ }
   },
 }
 </script>
