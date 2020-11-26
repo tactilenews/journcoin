@@ -1,5 +1,19 @@
 import gql from 'graphql-tag'
 
+export const READ = gql`
+  query($slug: String!) {
+    read(slug: $slug) {
+      id
+      slug
+      title
+      teaser
+      author {
+        name
+      }
+    }
+  }
+`
+
 export const ARTICLE_PREVIEW = gql`
   query {
     articles(stage: DRAFT, locales: en) {

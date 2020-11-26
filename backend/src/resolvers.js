@@ -18,7 +18,7 @@ export default (subschema) => ({
       operation: 'query',
       fieldName: 'article',
       args: {
-        where: { id: args.id },
+        where: { slug: args.slug },
       },
       context,
       info,

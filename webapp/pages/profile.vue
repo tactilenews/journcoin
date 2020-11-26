@@ -7,7 +7,7 @@
     />
     <template v-else>
       <div class="flex flex-col items-center">
-        <article v-if="profile" class="prose py-6">
+        <article class="prose py-6">
           <h1>Hallo {{ profile.name }}</h1>
           <p>
             Du hast {{ profile.articles.length }} Artikel geschrieben und dafür
