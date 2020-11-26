@@ -31,7 +31,7 @@
       </div>
     </div>
 
-    <template v-slot:footer>
+    <template #footer>
       <Navigation v-if="isAuthenticated" :links="links" />
     </template>
   </PageWrapper>
