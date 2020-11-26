@@ -13,25 +13,8 @@
 </template>
 
 <script>
-import gql from 'graphql-tag'
-import ArticlePreview from '@/components/ArticlePreview/ArticlePreview.vue'
-
-const ARTICLE_PREVIEW = gql`
-  query {
-    articles(stage: DRAFT, locales: en) {
-      id
-      title
-      slug
-      teaser
-      journCoins {
-        id
-        owner {
-          name
-        }
-      }
-    }
-  }
-`
+import ArticlePreview from '~/components/ArticlePreview/ArticlePreview.vue'
+import { ARTICLE_PREVIEW } from '~/graphql/queries'
 
 export default {
   components: {
