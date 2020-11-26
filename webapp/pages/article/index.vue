@@ -1,7 +1,7 @@
 <template>
   <PageWrapper title="Welchen Artikel möchtest du lesen?">
     <ApolloQuery :query="ARTICLE_PREVIEW" notify-on-network-status-change>
-      <template v-slot="{ result: { loading, error, data } }">
+      <template #default="{ result: { loading, error, data } }">
         <div v-if="data" class="flex flex-col items-center">
           <Spinner v-if="loading" />
           <div v-if="error" class="error apollo">An error occurred</div>
@@ -14,7 +14,7 @@
         </div>
       </template>
     </ApolloQuery>
-    <template v-slot:footer>
+    <template #footer>
       <Navigation :links="links" />
     </template>
   </PageWrapper>

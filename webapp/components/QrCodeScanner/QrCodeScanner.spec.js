@@ -53,7 +53,9 @@ describe('QrCodeScanner', () => {
 
         it('emits no event', async () => {
           const wrapper = await qrCodeScanned()
-          expect(wrapper.emitted()).toEqual({})
+          expect(wrapper.emitted()).toEqual({
+            'unknown-qr-code': [['https://app.journcoin.de/42']],
+          })
         })
       })
 
