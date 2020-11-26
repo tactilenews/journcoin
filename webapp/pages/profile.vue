@@ -1,5 +1,5 @@
 <template>
-  <PageWrapper title="Dein Profil">
+  <PageWrapper title="Mein Profil">
     <Icon
       v-if="$apollo.queries.profile.loading"
       class="h-10 w-10 animate-spin"
@@ -19,20 +19,7 @@
           </p>
         </article>
       </div>
-      <div class="flex flex-row justify-items-auto">
-        <nuxt-link
-          to="/"
-          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
-        >
-          QR code scannen
-        </nuxt-link>
-        <nuxt-link
-          to="/article"
-          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
-        >
-          Artikel auswählen
-        </nuxt-link>
-      </div>
+      <Navigation :links="links" />
     </template>
   </PageWrapper>
 </template>
@@ -41,10 +28,11 @@
 import { mapGetters, mapMutations } from 'vuex'
 import Icon from '~/components/Icon/Icon.vue'
 import { JOURNCOINS, PROFILE } from '~/graphql/queries'
+import Navigation from '~/components/Navigation/Navigation.vue'
 
 export default {
   middleware: ['isAuth'],
-  components: { Icon },
+  components: { Icon, Navigation },
   apollo: {
     journCoins: {
       query: JOURNCOINS,
@@ -53,6 +41,14 @@ export default {
       },
     },
     profile: PROFILE,
+  },
+  data() {
+    return {
+      links: [
+        { to: '/', label: 'QR Code scannen' },
+        { to: '/article', label: 'Artikel auswählen' },
+      ],
+    }
   },
   computed: {
     ...mapGetters({

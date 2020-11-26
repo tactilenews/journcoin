@@ -11,14 +11,17 @@
       <VueQrcode :value="link" :options="{ width: 200 }"></VueQrcode>
       <nuxt-content :document="read" />
     </article>
+    <Navigation :links="links" />
   </PageWrapper>
 </template>
 
 <script>
 import VueQrcode from '@chenfengyuan/vue-qrcode'
 import { READ } from '~/graphql/queries'
+import Navigation from '~/components/Navigation/Navigation.vue'
 
 export default {
+  components: { Navigation, VueQrcode },
   apollo: {
     read: {
       query: READ,
@@ -28,13 +31,15 @@ export default {
       },
     },
   },
-  components: {
-    VueQrcode,
-  },
   asyncData({ params, $config }) {
     const { slug } = params
     const link = `${$config.URL}/article/${slug}`
     return { link }
+  },
+  data() {
+    return {
+      links: [{ to: '/article', label: 'Zurück zur Artikel-Übersicht' }],
+    }
   },
 }
 </script>

@@ -1,14 +1,14 @@
 <template>
-  <PageWrapper title="Artikel auswählen">
-    <article class="prose py-6">
-      <h1>Welchen Artikel möchtest du lesen?</h1>
+  <PageWrapper title="Welchen Artikel möchtest du lesen?">
+    <div class="flex flex-col items-center">
       <ArticlePreview
         v-for="article in articles"
         :key="article.slug"
         :article="article"
         @choose="choose"
       />
-    </article>
+    </div>
+    <Navigation :links="links" />
   </PageWrapper>
 </template>
 
@@ -22,6 +22,14 @@ export default {
   },
   apollo: {
     articles: ARTICLE_PREVIEW,
+  },
+  data() {
+    return {
+      links: [
+        { to: '/', label: 'QR Code scannen' },
+        { to: '/profile', label: 'Mein Profil' },
+      ],
+    }
   },
   methods: {
     choose(slug) {

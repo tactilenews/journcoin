@@ -1,5 +1,5 @@
 <template>
-  <PageWrapper title="JournCoin">
+  <PageWrapper title="QR Code scannen">
     <div class="flex flex-col items-center">
       <article class="prose py-6">
         <h1>Löse Deine JournCoins ein!</h1>
@@ -13,6 +13,7 @@
         <QrCodeScanner @parse="dispatch" />
       </div>
     </div>
+    <Navigation :links="links" />
   </PageWrapper>
 </template>
 
@@ -21,9 +22,18 @@ import decode from 'jwt-decode'
 import { mapMutations } from 'vuex'
 import PageWrapper from '~/components/PageWrapper/PageWrapper.vue'
 import QrCodeScanner from '~/components/QrCodeScanner/QrCodeScanner.vue'
+import Navigation from '~/components/Navigation/Navigation.vue'
 
 export default {
-  components: { PageWrapper, QrCodeScanner },
+  components: { PageWrapper, QrCodeScanner, Navigation },
+  data() {
+    return {
+      links: [
+        { to: '/article', label: 'Artikel auswählen' },
+        { to: '/profile', label: 'Mein Profil' },
+      ],
+    }
+  },
   mounted() {
     const { jwt } = this.$route.query
     if (jwt) this.dispatch(jwt)
