@@ -42,6 +42,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           GRAPH_CMS_ENDPOINT: ${{ secrets.GRAPH_CMS_ENDPOINT }}
           GRAPH_CMS_API_TOKEN: ${{ secrets.GRAPH_CMS_API_TOKEN }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
 
   netlify:
     runs-on: ubuntu-latest
@@ -76,6 +77,8 @@ jobs:
 
       - name: Generate dist/ folder
         run: yarn run generate
+        env:
+          BACKEND_URL: ${{ secrets.BACKEND_URL }}
 
       - name: Publish
         uses: netlify/actions/cli@master

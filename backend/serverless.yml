@@ -7,6 +7,10 @@ provider:
   name: aws
   region: eu-central-1
   runtime: nodejs12.x
+  environment:
+    JWT_SECRET: "${env:JWT_SECRET}"
+    GRAPH_CMS_API_TOKEN: "${env:GRAPH_CMS_API_TOKEN}"
+    GRAPH_CMS_ENDPOINT: "${env:GRAPH_CMS_ENDPOINT}"
 functions:
   graphql:
     # this is formatted as <FILENAME>.<HANDLER>
