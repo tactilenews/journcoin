@@ -17,7 +17,9 @@
                 :value="articleLink"
                 :options="{ width: 200 }"
               ></VueQrcode>
-              <nuxt-content :document="data.read" />
+              <p>
+                {{ data.read.text }}
+              </p>
             </article>
           </template>
         </div>

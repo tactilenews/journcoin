@@ -7,8 +7,16 @@ export const READ = gql`
       slug
       title
       teaser
+      text
       author {
         name
+      }
+      journCoins {
+        id
+        owner {
+          id
+          name
+        }
       }
     }
   }
