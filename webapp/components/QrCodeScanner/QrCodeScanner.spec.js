@@ -6,6 +6,8 @@ const localVue = createLocalVue()
 localVue.use(VueQrcodeReader)
 
 describe('validJournCoin', () => {
+  const hostUrl = new URL('https://app.journcoin.de')
+
   describe('given URL', () => {
     const urls = {
       'https://app.journcoin.de/?jwt=42': '42',
@@ -17,7 +19,7 @@ describe('validJournCoin', () => {
 
     for (const url in urls) {
       it(`returns ${JSON.stringify(urls[url])} for ${url}`, () => {
-        expect(validJournCoin(url)).toEqual(urls[url])
+        expect(validJournCoin(url, hostUrl)).toEqual(urls[url])
       })
     }
 
@@ -36,7 +38,10 @@ describe('QrCodeScanner', () => {
     describe('when QR is scanned', () => {
       let url
       const qrCodeScanned = async () => {
-        const wrapper = shallowMount(QrCodeScanner, { localVue })
+        const wrapper = shallowMount(QrCodeScanner, {
+          localVue,
+          mocks: { $config: { URL: 'http://localhost:3000' } },
+        })
         await wrapper
           .findComponent({ name: 'qrcode-stream' })
           .vm.$emit('decode', url)
@@ -53,7 +58,7 @@ describe('QrCodeScanner', () => {
       })
 
       describe('QR code represents valid JournCoin', () => {
-        beforeEach(() => (url = 'https://app.journcoin.de/?jwt=abcde'))
+        beforeEach(() => (url = 'https://localhost:3000/?jwt=abcde'))
 
         it('$emits "parse" with QR encoded JWT', async () => {
           const wrapper = await qrCodeScanned()

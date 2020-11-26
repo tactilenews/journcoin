@@ -31,7 +31,6 @@ import { JOURNCOINS, PROFILE } from '~/graphql/queries'
 import Navigation from '~/components/Navigation/Navigation.vue'
 
 export default {
-  middleware: ['isAuth'],
   components: { Icon, Navigation },
   apollo: {
     journCoins: {

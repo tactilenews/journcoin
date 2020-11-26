@@ -7,10 +7,10 @@
 </template>
 
 <script>
-export const validJournCoin = (decodedString) => {
+export const validJournCoin = (decodedString, hostUrl) => {
   try {
     const url = new URL(decodedString)
-    if (url.hostname !== 'app.journcoin.de') return null
+    if (url.hostname !== hostUrl.hostname) return null
     return url.searchParams.get('jwt')
   } catch (e) {
     return null
@@ -20,7 +20,7 @@ export const validJournCoin = (decodedString) => {
 export default {
   methods: {
     onDecode(decodedString) {
-      const decoded = validJournCoin(decodedString)
+      const decoded = validJournCoin(decodedString, new URL(this.$config.URL))
       if (!decoded) return false
       this.$emit('parse', decoded)
     },
