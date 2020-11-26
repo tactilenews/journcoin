@@ -35,7 +35,7 @@
                 aria-label="Notifications"
               >
                 <Icon name="journcoin" />
-                <span class="text-xl">{{ coins.length }}</span>
+                <span class="text-xl">{{ available }}</span>
               </button>
 
               <!-- Profile dropdown -->
@@ -59,6 +59,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import ProfileDropdown from '~/components/ProfileDropdown/ProfileDropdown.vue'
 import MobileMenu from '~/components/MobileMenu/MobileMenu.vue'
 import Icon from '~/components/Icon/Icon.vue'
@@ -84,5 +85,10 @@ export default {
       image: 'till.jpg',
     },
   }),
+  computed: {
+    ...mapGetters({
+      available: 'localJournCoins/available',
+    }),
+  },
 }
 </script>

@@ -15,7 +15,7 @@
           </p>
           <p>
             Außerdem hast du schon {{ profile.journCoins.length }} Artikel
-            gekauft.
+            gekauft und noch {{ available }} JournCoins übrig.
           </p>
         </article>
       </div>
@@ -38,6 +38,7 @@
 </template>
 
 <script>
+import { mapGetters, mapMutations } from 'vuex'
 import Icon from '~/components/Icon/Icon.vue'
 import { JOURNCOINS, PROFILE } from '~/graphql/queries'
 
@@ -45,15 +46,28 @@ export default {
   middleware: ['isAuth'],
   components: { Icon },
   apollo: {
-    journCoins: JOURNCOINS,
+    journCoins: {
+      query: JOURNCOINS,
+      result(res, key) {
+        this.updateRemoteTokens(res.data[key].map((coin) => coin.token))
+      },
+    },
     profile: PROFILE,
   },
   computed: {
+    ...mapGetters({
+      available: 'localJournCoins/available',
+    }),
     earned() {
       return this.profile.articles
         .map((article) => article.journCoins.length)
         .reduce((a, b) => a + b, 0)
     },
+  },
+  methods: {
+    ...mapMutations({
+      updateRemoteTokens: 'localJournCoins/updateRemoteTokens',
+    }),
   },
 }
 </script>

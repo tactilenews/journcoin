@@ -18,6 +18,7 @@
 
 <script>
 import decode from 'jwt-decode'
+import { mapMutations } from 'vuex'
 import PageWrapper from '~/components/PageWrapper/PageWrapper.vue'
 import QrCodeScanner from '~/components/QrCodeScanner/QrCodeScanner.vue'
 
@@ -28,11 +29,17 @@ export default {
     if (jwt) this.dispatch(jwt)
   },
   methods: {
+    ...mapMutations({
+      saveScannedJournCoin: 'localJournCoins/add',
+    }),
     async dispatch(jwt) {
-      const { person } = decode(jwt)
+      const { person, coin } = decode(jwt)
       if (person) {
         await this.$apolloHelpers.onLogin(jwt)
         this.$router.push('/profile')
+      }
+      if (coin) {
+        this.saveScannedJournCoin(jwt)
       }
     },
   },
