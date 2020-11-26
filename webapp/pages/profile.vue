@@ -30,22 +30,14 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex'
+import { mapGetters } from 'vuex'
 import { ApolloQuery } from 'vue-apollo'
 import Spinner from '~/components/Spinner/Spinner.vue'
-import { JOURNCOINS, PROFILE } from '~/graphql/queries'
+import { PROFILE } from '~/graphql/queries'
 import Navigation from '~/components/Navigation/Navigation.vue'
 
 export default {
   components: { Spinner, Navigation, ApolloQuery },
-  apollo: {
-    journCoins: {
-      query: JOURNCOINS,
-      result(res, key) {
-        this.updateRemoteTokens(res.data[key].map((coin) => coin.token))
-      },
-    },
-  },
   data() {
     return {
       PROFILE,
@@ -57,13 +49,10 @@ export default {
   },
   computed: {
     ...mapGetters({
-      available: 'localJournCoins/available',
+      available: 'wallet/budget',
     }),
   },
   methods: {
-    ...mapMutations({
-      updateRemoteTokens: 'localJournCoins/updateRemoteTokens',
-    }),
     earned(articles) {
       return articles
         .map((article) => article.journCoins.length)

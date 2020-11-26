@@ -87,7 +87,7 @@ export default {
   }),
   computed: {
     ...mapGetters({
-      available: 'localJournCoins/available',
+      available: 'wallet/budget',
     }),
   },
 }

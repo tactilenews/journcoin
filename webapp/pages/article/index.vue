@@ -9,7 +9,8 @@
             v-for="article in data.articles"
             :key="article.slug"
             :article="article"
-            @choose="choose"
+            :current-user-id="currentUserId"
+            @read="read"
           />
         </div>
       </template>
@@ -22,6 +23,7 @@
 
 <script>
 import { ApolloQuery } from 'vue-apollo'
+import decode from 'jwt-decode'
 import ArticlePreview from '~/components/ArticlePreview/ArticlePreview.vue'
 import { ARTICLE_PREVIEW } from '~/graphql/queries'
 import Spinner from '~/components/Spinner/Spinner.vue'
@@ -38,8 +40,17 @@ export default {
       ],
     }
   },
+  computed: {
+    currentUserId() {
+      const jwt = this.$apolloHelpers.getToken()
+      const {
+        person: { id },
+      } = decode(jwt)
+      return id
+    },
+  },
   methods: {
-    choose(slug) {
+    read(slug) {
       this.$router.push({ name: 'article-slug', params: { slug } })
     },
   },
