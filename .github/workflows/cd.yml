@@ -79,6 +79,7 @@ jobs:
         run: yarn run generate
         env:
           BACKEND_URL: ${{ secrets.BACKEND_URL }}
+          URL: ${{ secrets.URL }}
 
       - name: Publish
         uses: netlify/actions/cli@master
