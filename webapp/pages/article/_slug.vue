@@ -1,5 +1,5 @@
 <template>
-  <PageWrapper title="Artikel lesen">
+  <PageWrapper>
     <ApolloQuery
       :query="READ"
       :variables="{ slug }"

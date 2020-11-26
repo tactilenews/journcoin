@@ -1,5 +1,5 @@
 <template>
-  <PageWrapper title="Mein Profil">
+  <PageWrapper>
     <ApolloQuery :query="PROFILE" notify-on-network-status-change>
       <template #default="{ result: { loading, error, data } }">
         <div class="flex flex-col items-center">
@@ -42,7 +42,7 @@ export default {
     return {
       PROFILE,
       links: [
-        { to: '/', label: 'QR Code scannen' },
+        { to: '/', label: 'JournCoins scannen' },
         { to: '/article', label: 'Artikel auswählen' },
       ],
     }

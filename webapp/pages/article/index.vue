@@ -1,20 +1,25 @@
 <template>
-  <PageWrapper title="Welchen Artikel möchtest du lesen?">
-    <ApolloQuery :query="ARTICLE_PREVIEW" notify-on-network-status-change>
-      <template #default="{ result: { loading, error, data } }">
-        <div v-if="data" class="flex flex-col items-center">
-          <Spinner v-if="loading" />
-          <div v-if="error" class="error apollo">An error occurred</div>
-          <ArticlePreview
-            v-for="article in data.articles"
-            :key="article.slug"
-            :article="article"
-            :current-user-id="currentUserId"
-            @read="read"
-          />
-        </div>
-      </template>
-    </ApolloQuery>
+  <PageWrapper>
+    <div class="flex flex-col items-center">
+      <div class="prose py-6">
+        <h1>Welchen Artikel möchtest du lesen?</h1>
+      </div>
+      <ApolloQuery :query="ARTICLE_PREVIEW" notify-on-network-status-change>
+        <template #default="{ result: { loading, error, data } }">
+          <div v-if="data" class="flex flex-col items-center">
+            <Spinner v-if="loading" />
+            <div v-if="error" class="error apollo">An error occurred</div>
+            <ArticlePreview
+              v-for="article in data.articles"
+              :key="article.slug"
+              :article="article"
+              :current-user-id="currentUserId"
+              @read="read"
+            />
+          </div>
+        </template>
+      </ApolloQuery>
+    </div>
     <template #footer>
       <Navigation :links="links" />
     </template>
@@ -35,7 +40,7 @@ export default {
     return {
       ARTICLE_PREVIEW,
       links: [
-        { to: '/', label: 'QR Code scannen' },
+        { to: '/', label: 'JournCoins scannen' },
         { to: '/profile', label: 'Mein Profil' },
       ],
     }

@@ -1,19 +1,10 @@
 <template>
-  <PageWrapper title="QR Code scannen">
+  <PageWrapper>
     <div class="flex flex-col items-center">
-      <article class="prose py-6">
-        <template v-if="isAuthenticated">
-          <h1>Löse Deine JournCoins ein!</h1>
-          <p>JournCoin ist die neue Währung für guten Journalismus.</p>
-          <p>
-            Du hast ein Produkt mit einem JournCoin-Sticker gekauft? Hol dir
-            deine gratis Story!
-          </p>
-        </template>
-        <template v-else>
-          <h1>Scanne einen Login QR code!</h1>
-        </template>
-      </article>
+      <div class="prose py-6">
+        <h1 v-if="isAuthenticated">Scanne deine JournCoins!</h1>
+        <h1 v-else>Scanne deinen Login-Code!</h1>
+      </div>
 
       <div class="flex flex-col items-center">
         <div class="py-5">
