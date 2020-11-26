@@ -21,8 +21,11 @@ export default {
   methods: {
     onDecode(decodedString) {
       const decoded = validJournCoin(decodedString, new URL(this.$config.URL))
-      if (!decoded) return false
-      this.$emit('parse', decoded)
+      if (!decoded) {
+        this.$emit('unknown-qr-code', decodedString)
+      } else {
+        this.$emit('parse', decoded)
+      }
     },
   },
 }

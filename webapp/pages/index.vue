@@ -17,10 +17,16 @@
 
       <div class="flex flex-col items-center">
         <div class="py-5">
-          <QrCodeScanner @parse="dispatch" />
+          <QrCodeScanner
+            @parse="dispatch"
+            @unknown-qr-code="unknownQrCode = true"
+          />
         </div>
         <strong v-if="isAuthenticated">
           Bislang hast du {{ earned }} JournCoins gescanned!
+        </strong>
+        <strong v-if="unknownQrCode">
+          Das sieht nicht wie ein QR code von dieser App aus!
         </strong>
       </div>
     </div>
@@ -42,6 +48,7 @@ export default {
   components: { PageWrapper, QrCodeScanner, Navigation },
   data() {
     return {
+      unknownQrCode: false,
       links: [
         { to: '/article', label: 'Artikel auswählen' },
         { to: '/profile', label: 'Mein Profil' },
@@ -51,8 +58,10 @@ export default {
   computed: {
     ...mapGetters({
       earned: 'localJournCoins/available',
-      isAuthenticated: 'auth/isAuthenticated',
     }),
+    isAuthenticated() {
+      return !!this.$apolloHelpers.getToken()
+    },
   },
   mounted() {
     const { jwt } = this.$route.query
@@ -63,6 +72,7 @@ export default {
       saveScannedJournCoin: 'localJournCoins/add',
     }),
     async dispatch(jwt) {
+      this.unknownQrCode = false
       const { person, coin } = decode(jwt)
       if (person) {
         await this.$apolloHelpers.onLogin(jwt)
