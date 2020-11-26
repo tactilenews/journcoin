@@ -57,7 +57,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      earned: 'localJournCoins/available',
+      earned: 'wallet/budget',
     }),
     isAuthenticated() {
       return !!this.$apolloHelpers.getToken()
@@ -69,7 +69,7 @@ export default {
   },
   methods: {
     ...mapMutations({
-      saveScannedJournCoin: 'localJournCoins/add',
+      saveScannedJournCoin: 'wallet/add',
     }),
     async dispatch(jwt) {
       this.unknownQrCode = false

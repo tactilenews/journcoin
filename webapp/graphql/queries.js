@@ -30,9 +30,8 @@ export const ARTICLE_PREVIEW = gql`
       slug
       teaser
       journCoins {
-        id
         owner {
-          name
+          id
         }
       }
     }
