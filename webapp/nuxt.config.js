@@ -53,7 +53,13 @@ export default {
     '@nuxt/content',
     // https://github.com/nuxt-community/apollo-module
     '@nuxtjs/apollo',
+    // https://www.npmjs.com/package/@nuxtjs/markdownit
+    '@nuxtjs/markdownit',
   ],
+
+  markdownit: {
+    injected: true,
+  },
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
   axios: {},
