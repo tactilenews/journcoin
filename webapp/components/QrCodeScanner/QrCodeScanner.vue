@@ -10,7 +10,7 @@
 import { mapMutations } from 'vuex'
 import jwtDecode from 'jwt-decode'
 
-export const validJournCoin = (decodedString, hostUrl) => {
+export const qrCodePayload = (decodedString, hostUrl) => {
   try {
     const url = new URL(decodedString)
     if (url.hostname !== hostUrl.hostname) return null
@@ -33,7 +33,7 @@ export default {
       addCoin: 'wallet/add',
     }),
     async onDecode(decodedString) {
-      const jwt = validJournCoin(decodedString, new URL(this.$config.URL))
+      const jwt = qrCodePayload(decodedString, new URL(this.$config.URL))
       if (!jwt) return this.$emit('unknown-qr-code', decodedString)
       await this.dispatch(jwt)
     },
