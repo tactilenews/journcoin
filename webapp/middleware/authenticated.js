@@ -1,5 +1,5 @@
-export default ({ app, route, redirect }) => {
+export default ({ store, route, redirect }) => {
   if (['index'].includes(route.name)) return false
-  const hasToken = !!app.$apolloHelpers.getToken()
-  if (!hasToken) return redirect('/')
+  const { profile } = store.state.auth
+  if (!profile) return redirect('/')
 }

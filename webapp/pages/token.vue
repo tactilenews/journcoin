@@ -2,7 +2,7 @@
   <PageWrapper>
     <div class="flex flex-col items-center">
       <article class="prose prose-lg py-6">
-        <h2>Dein JournCoin wurde gescanned!</h2>
+        <h2>Dein JournCoin wurde gescannt!</h2>
         <div
           style="
             width: 100%;
