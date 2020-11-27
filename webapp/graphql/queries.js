@@ -7,6 +7,7 @@ export const READ = gql`
       slug
       title
       teaser
+      originalURL
       text {
         markdown
       }

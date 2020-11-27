@@ -14,7 +14,7 @@
               <h2>{{ data.read.title }}</h2>
               <p>{{ data.read.teaser }}</p>
               <VueQrcode
-                :value="articleLink"
+                :value="data.read.originalURL"
                 :options="{ width: 200 }"
               ></VueQrcode>
               <!--eslint-disable-next-line vue/no-v-html -->
@@ -39,11 +39,10 @@ import Spinner from '~/components/Spinner/Spinner.vue'
 
 export default {
   components: { ApolloQuery, Spinner, Navigation, VueQrcode },
-  asyncData({ params, $config }) {
+  asyncData({ params }) {
     const { slug } = params
-    const articleLink = `${$config.URL}/article/${slug}`
     const links = [{ to: '/article', label: 'Zurück zur Artikel-Übersicht' }]
-    return { articleLink, links, slug, READ }
+    return { links, slug, READ }
   },
 }
 </script>
