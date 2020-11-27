@@ -15,8 +15,8 @@
             @unknown-qr-code="error = 'unknown-qr-code'"
           />
         </div>
-        <Spinner v-if="$apollo.loading" />
-        <section class="prose text-center">
+        <Spinner v-if="authLoading || walletLoading" />
+        <section v-else class="prose text-center">
           <h3 v-if="profile">
             Bislang hast du {{ budget }} JournCoins gescannt.
           </h3>
@@ -61,6 +61,8 @@ export default {
   },
   computed: {
     ...mapGetters({
+      walletLoading: 'wallet/loading',
+      authLoading: 'auth/loading',
       budget: 'wallet/budget',
       profile: 'auth/profile',
     }),
