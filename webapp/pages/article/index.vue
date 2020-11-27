@@ -1,8 +1,8 @@
 <template>
   <PageWrapper>
     <div class="flex flex-col items-center">
-      <div class="prose py-6">
-        <h1>Welchen Artikel möchtest du lesen?</h1>
+      <div class="prose prose-lg py-6">
+        <h2>Welchen Artikel möchtest du lesen?</h2>
       </div>
       <ApolloQuery :query="ARTICLE_PREVIEW" notify-on-network-status-change>
         <template #default="{ result: { loading, error, data } }">
@@ -13,7 +13,6 @@
               v-for="article in data.articles"
               :key="article.slug"
               :article="article"
-              :current-user-id="currentUserId"
               @read="read"
             />
           </div>
@@ -28,7 +27,6 @@
 
 <script>
 import { ApolloQuery } from 'vue-apollo'
-import decode from 'jwt-decode'
 import ArticlePreview from '~/components/ArticlePreview/ArticlePreview.vue'
 import { ARTICLE_PREVIEW } from '~/graphql/queries'
 import Spinner from '~/components/Spinner/Spinner.vue'
@@ -41,18 +39,9 @@ export default {
       ARTICLE_PREVIEW,
       links: [
         { to: '/', label: 'JournCoins scannen' },
-        { to: '/profile', label: 'Mein Profil' },
+        { to: '/profile', label: 'Zur Autorenseite' },
       ],
     }
-  },
-  computed: {
-    currentUserId() {
-      const jwt = this.$apolloHelpers.getToken()
-      const {
-        person: { id },
-      } = decode(jwt)
-      return id
-    },
   },
   methods: {
     read(slug) {

@@ -6,18 +6,41 @@
           <Spinner v-if="loading" />
           <div v-if="error" class="error apollo">An error occurred</div>
           <template v-else-if="data">
-            <article class="prose py-6">
-              <h1>Hallo {{ data.profile.name }}</h1>
+            <article class="prose prose-lg py-6">
+              <h2>Autorenseite von {{ profile.name }}</h2>
               <p>
-                Du hast {{ data.profile.articles.length }} Artikel geschrieben
-                und dafür bereits {{ earned(data.profile.articles) }} JournCoins
-                erhalten.
+                Du hast
+                <strong
+                  >{{ data.profile.articles.length }} Artikel
+                  geschrieben</strong
+                >
+                und dadurch insgesamt
+                <strong
+                  >{{ earned(data.profile.articles) }} JournCoins
+                  verdient</strong
+                >. Außerdem hast du schon
+                <strong
+                  >{{ data.profile.journCoins.length }} Artikel gekauft</strong
+                >
+                und ein Budget von noch
+                <strong>{{ budget }} JournCoins</strong> übrig.
               </p>
-              <p>
-                Außerdem hast du schon
-                {{ data.profile.journCoins.length }} Artikel gekauft und noch
-                {{ available }} JournCoins übrig.
-              </p>
+              <section>
+                <h3>Einnahmen</h3>
+                <table>
+                  <tr>
+                    <th>Artikel</th>
+                    <th>JournCoins</th>
+                  </tr>
+                  <tr
+                    v-for="article in data.profile.articles"
+                    :key="article.slug"
+                  >
+                    <td>{{ article.title }}</td>
+                    <td>{{ article.journCoins.length }}</td>
+                  </tr>
+                </table>
+              </section>
             </article>
           </template>
         </div>
@@ -49,7 +72,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      available: 'wallet/budget',
+      budget: 'wallet/budget',
+      profile: 'auth/profile',
     }),
   },
   methods: {

@@ -7,6 +7,9 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
+import jwtDecode from 'jwt-decode'
+
 export const validJournCoin = (decodedString, hostUrl) => {
   try {
     const url = new URL(decodedString)
@@ -18,13 +21,30 @@ export const validJournCoin = (decodedString, hostUrl) => {
 }
 
 export default {
+  props: {
+    queryParams: { type: Object, default: () => ({}) },
+  },
+  async created() {
+    const { jwt } = this.queryParams
+    if (jwt) await this.dispatch(jwt)
+  },
   methods: {
-    onDecode(decodedString) {
-      const decoded = validJournCoin(decodedString, new URL(this.$config.URL))
-      if (!decoded) {
-        this.$emit('unknown-qr-code', decodedString)
-      } else {
-        this.$emit('parse', decoded)
+    ...mapMutations({
+      addCoin: 'wallet/add',
+    }),
+    async onDecode(decodedString) {
+      const jwt = validJournCoin(decodedString, new URL(this.$config.URL))
+      if (!jwt) return this.$emit('unknown-qr-code', decodedString)
+      await this.dispatch(jwt)
+    },
+    async dispatch(jwt) {
+      const { person, coin } = jwtDecode(jwt)
+      if (person) {
+        await this.$store.dispatch('auth/login', jwt)
+      }
+      if (coin) {
+        this.addCoin(jwt)
+        this.$emit('valid-journcoin')
       }
     },
   },

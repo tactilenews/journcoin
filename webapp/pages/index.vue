@@ -1,78 +1,84 @@
 <template>
   <PageWrapper>
     <div class="flex flex-col items-center">
-      <div class="prose py-6">
-        <h1 v-if="isAuthenticated">Scanne deine JournCoins!</h1>
-        <h1 v-else>Scanne deinen Login-Code!</h1>
+      <div class="prose prose-lg py-6">
+        <h2 v-if="profile">Hallo {{ profile.name }}!</h2>
+        <h2 v-else>Scanne deinen Login-Code!</h2>
       </div>
 
       <div class="flex flex-col items-center">
         <div class="py-5">
           <QrCodeScanner
-            @parse="dispatch"
-            @unknown-qr-code="unknownQrCode = true"
+            :query-params="query"
+            @valid-journcoin="$router.push('/token')"
+            @invalid-journcoin="error = 'invalid-journcoin'"
+            @unknown-qr-code="error = 'unknown-qr-code'"
           />
         </div>
-        <strong v-if="isAuthenticated">
-          Bislang hast du {{ earned }} JournCoins gescanned!
-        </strong>
-        <strong v-if="unknownQrCode">
-          Das sieht nicht wie ein QR code von dieser App aus!
-        </strong>
+        <Spinner v-if="$apollo.loading" />
+        <section class="prose text-center">
+          <h3 v-if="profile">
+            Bislang hast du {{ budget }} JournCoins gescannt.
+          </h3>
+          <p v-if="error" class="bg-red-500 py-2 px-4 w-full text-white shadow">
+            <template v-if="error === 'unknown-qr-code'">
+              Der letzte gescannte QR-Code sah nicht so aus, als gehörte er zu
+              dieser App!
+            </template>
+            <template v-if="error === 'invalid-journcoin'">
+              Dieser JournCoin ist bereits von jemandem ausgegeben worden!
+            </template>
+          </p>
+        </section>
       </div>
     </div>
 
     <template #footer>
-      <Navigation v-if="isAuthenticated" :links="links" />
+      <Navigation v-if="profile" :links="links" />
     </template>
   </PageWrapper>
 </template>
 
 <script>
-import decode from 'jwt-decode'
-import { mapMutations, mapGetters } from 'vuex'
+import { mapGetters } from 'vuex'
+import Spinner from '~/components/Spinner/Spinner'
 import PageWrapper from '~/components/PageWrapper/PageWrapper.vue'
 import QrCodeScanner from '~/components/QrCodeScanner/QrCodeScanner.vue'
 import Navigation from '~/components/Navigation/Navigation.vue'
 
 export default {
-  components: { PageWrapper, QrCodeScanner, Navigation },
+  components: { PageWrapper, QrCodeScanner, Navigation, Spinner },
   data() {
+    const { query } = this.$route
     return {
-      unknownQrCode: false,
+      query,
+      error: null,
       links: [
         { to: '/article', label: 'Artikel auswählen' },
-        { to: '/profile', label: 'Mein Profil' },
+        { to: '/profile', label: 'Zur Autorenseite' },
       ],
     }
   },
   computed: {
     ...mapGetters({
-      earned: 'wallet/budget',
+      budget: 'wallet/budget',
+      profile: 'auth/profile',
     }),
-    isAuthenticated() {
-      return !!this.$apolloHelpers.getToken()
-    },
-  },
-  mounted() {
-    const { jwt } = this.$route.query
-    if (jwt) this.dispatch(jwt)
-  },
-  methods: {
-    ...mapMutations({
-      saveScannedJournCoin: 'wallet/add',
-    }),
-    async dispatch(jwt) {
-      this.unknownQrCode = false
-      const { person, coin } = decode(jwt)
-      if (person) {
-        await this.$apolloHelpers.onLogin(jwt)
-        this.$router.push('/profile')
-      }
-      if (coin) {
-        this.saveScannedJournCoin(jwt)
-      }
-    },
   },
 }
 </script>
+
+<style>
+/* Banner open/load animation */
+.alert-banner {
+  -webkit-animation: slide-in-top 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  animation: slide-in-top 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+/* Banner close animation */
+.alert-banner input:checked ~ * {
+  -webkit-animation: slide-out-top 0.5s cubic-bezier(0.55, 0.085, 0.68, 0.53)
+    both;
+  animation: slide-out-top 0.5s cubic-bezier(0.55, 0.085, 0.68, 0.53) both;
+}
+</style>

@@ -1,5 +1,5 @@
 <template>
-  <section class="prose pt-6 pb-8">
+  <section class="prose prose-lg pt-6 pb-8">
     <h2>{{ article.title }}</h2>
     <button
       v-if="alreadyBought(article)"
@@ -46,7 +46,6 @@ export default {
   components: { ApolloMutation },
   props: {
     article: { type: Object, required: true },
-    currentUserId: { type: String, required: true },
   },
   data() {
     return { BUY }
@@ -55,6 +54,7 @@ export default {
     ...mapGetters({
       budget: 'wallet/budget',
       nextCoin: 'wallet/nextCoin',
+      profile: 'auth/profile',
     }),
     variables() {
       return { id: this.article.id, token: this.nextCoin }
@@ -66,7 +66,7 @@ export default {
     }),
     alreadyBought(article) {
       const buyerIds = article.journCoins.map((coin) => coin.owner.id)
-      return buyerIds.includes(this.currentUserId)
+      return buyerIds.includes(this.profile.id)
     },
     handlePayment({ data }) {
       const {
