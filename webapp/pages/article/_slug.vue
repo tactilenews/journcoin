@@ -17,9 +17,8 @@
                 :value="articleLink"
                 :options="{ width: 200 }"
               ></VueQrcode>
-              <p>
-                {{ data.read.text }}
-              </p>
+              <!--eslint-disable-next-line vue/no-v-html -->
+              <div v-html="$md.render(data.read.text.markdown)"></div>
             </article>
           </template>
         </div>

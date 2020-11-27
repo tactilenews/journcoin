@@ -6,8 +6,8 @@
       </div>
       <ApolloQuery :query="ARTICLE_PREVIEW" notify-on-network-status-change>
         <template #default="{ result: { loading, error, data } }">
+          <Spinner v-if="loading" />
           <div v-if="data" class="flex flex-col items-center">
-            <Spinner v-if="loading" />
             <div v-if="error" class="error apollo">An error occurred</div>
             <ArticlePreview
               v-for="article in data.articles"
