@@ -1,5 +1,5 @@
 <template>
-  <PageWrapper title="Artikel lesen">
+  <PageWrapper>
     <ApolloQuery
       :query="READ"
       :variables="{ slug }"
@@ -10,8 +10,8 @@
           <Spinner v-if="loading" />
           <div v-if="error" class="error apollo">An error occurred</div>
           <template v-else-if="data">
-            <article class="prose py-6">
-              <h1>{{ data.read.title }}</h1>
+            <article class="prose prose-lg py-6">
+              <h2>{{ data.read.title }}</h2>
               <p>{{ data.read.teaser }}</p>
               <VueQrcode
                 :value="articleLink"

@@ -67,7 +67,7 @@ export const PROFILE = gql`
 export const JOURNCOINS = gql`
   query {
     journCoins(stage: DRAFT, locales: en) {
-      id
+      token
     }
   }
 `

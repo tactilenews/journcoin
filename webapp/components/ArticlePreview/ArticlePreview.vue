@@ -1,17 +1,17 @@
 <template>
-  <section class="prose pt-6 pb-8">
-    <h2>{{ article.title }}</h2>
+  <section class="prose prose-lg pt-6 pb-8">
+    <h3>{{ article.title }}</h3>
     <button
       v-if="alreadyBought(article)"
-      class="float-right bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+      class="float-right bg-blue-500 hover:bg-blue-700 text-white font-bold ml-4 py-2 px-4 rounded-full"
       @click="$emit('read', article.slug)"
     >
-      Lesen
+      Kostenlos lesen
     </button>
     <button
       v-else-if="budget <= 0"
       disabled
-      class="float-right bg-gray-500 hover:bg-gray-400 text-gray font-bold py-2 px-4 rounded-full"
+      class="float-right bg-gray-500 hover:bg-gray-400 text-gray font-bold ml-4 py-2 px-4 rounded-full"
     >
       Kein Budget
     </button>
@@ -24,10 +24,10 @@
       <template #default="{ mutate, loading, error }">
         <button
           :disabled="loading"
-          class="float-right bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+          class="float-right bg-purple-500 hover:bg-purple-700 text-white font-bold ml-4 py-2 px-4 rounded-full"
           @click="mutate()"
         >
-          Kaufen
+          Artikel kaufen
         </button>
         <p v-if="error">An error occurred: {{ error }}</p>
       </template>
@@ -46,7 +46,6 @@ export default {
   components: { ApolloMutation },
   props: {
     article: { type: Object, required: true },
-    currentUserId: { type: String, required: true },
   },
   data() {
     return { BUY }
@@ -55,6 +54,7 @@ export default {
     ...mapGetters({
       budget: 'wallet/budget',
       nextCoin: 'wallet/nextCoin',
+      profile: 'auth/profile',
     }),
     variables() {
       return { id: this.article.id, token: this.nextCoin }
@@ -66,7 +66,7 @@ export default {
     }),
     alreadyBought(article) {
       const buyerIds = article.journCoins.map((coin) => coin.owner.id)
-      return buyerIds.includes(this.currentUserId)
+      return buyerIds.includes(this.profile.id)
     },
     handlePayment({ data }) {
       const {

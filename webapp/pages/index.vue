@@ -1,87 +1,71 @@
 <template>
-  <PageWrapper title="QR Code scannen">
+  <PageWrapper>
     <div class="flex flex-col items-center">
-      <article class="prose py-6">
-        <template v-if="isAuthenticated">
-          <h1>Löse Deine JournCoins ein!</h1>
-          <p>JournCoin ist die neue Währung für guten Journalismus.</p>
-          <p>
-            Du hast ein Produkt mit einem JournCoin-Sticker gekauft? Hol dir
-            deine gratis Story!
-          </p>
-        </template>
-        <template v-else>
-          <h1>Scanne einen Login QR code!</h1>
-        </template>
-      </article>
+      <div class="prose prose-lg py-6">
+        <h2 v-if="profile">Hallo {{ profile.name }}!</h2>
+        <h2 v-else>Scanne deinen Login-Code!</h2>
+      </div>
 
       <div class="flex flex-col items-center">
         <div class="py-5">
           <QrCodeScanner
-            @parse="dispatch"
-            @unknown-qr-code="unknownQrCode = true"
+            :query-params="query"
+            @valid-journcoin="$router.push('/token')"
+            @invalid-journcoin="error = 'invalid-journcoin'"
+            @unknown-qr-code="error = 'unknown-qr-code'"
           />
         </div>
-        <strong v-if="isAuthenticated">
-          Bislang hast du {{ earned }} JournCoins gescanned!
-        </strong>
-        <strong v-if="unknownQrCode">
-          Das sieht nicht wie ein QR code von dieser App aus!
-        </strong>
+        <Spinner v-if="authLoading || walletLoading" />
+        <section v-else class="prose text-center">
+          <h3 v-if="profile">
+            Bislang hast du {{ budget }} JournCoins gescannt.
+          </h3>
+          <p v-if="error" class="bg-red-500 py-2 px-4 w-full text-white shadow">
+            <template v-if="error === 'unknown-qr-code'">
+              Der letzte gescannte QR-Code sah nicht so aus, als gehörte er zu
+              dieser App!
+            </template>
+            <template v-if="error === 'invalid-journcoin'">
+              Dieser JournCoin ist bereits von jemandem ausgegeben worden!
+            </template>
+          </p>
+        </section>
       </div>
     </div>
 
     <template #footer>
-      <Navigation v-if="isAuthenticated" :links="links" />
+      <Navigation v-if="profile" :links="links" />
     </template>
   </PageWrapper>
 </template>
 
 <script>
-import decode from 'jwt-decode'
-import { mapMutations, mapGetters } from 'vuex'
+import { mapGetters } from 'vuex'
+import Spinner from '~/components/Spinner/Spinner'
 import PageWrapper from '~/components/PageWrapper/PageWrapper.vue'
 import QrCodeScanner from '~/components/QrCodeScanner/QrCodeScanner.vue'
 import Navigation from '~/components/Navigation/Navigation.vue'
 
 export default {
-  components: { PageWrapper, QrCodeScanner, Navigation },
+  components: { PageWrapper, QrCodeScanner, Navigation, Spinner },
   data() {
+    const { query } = this.$route
     return {
-      unknownQrCode: false,
+      query,
+      error: null,
       links: [
         { to: '/article', label: 'Artikel auswählen' },
-        { to: '/profile', label: 'Mein Profil' },
+        { to: '/profile', label: 'Zur Autorenseite' },
       ],
     }
   },
   computed: {
     ...mapGetters({
-      earned: 'wallet/budget',
+      walletLoading: 'wallet/loading',
+      authLoading: 'auth/loading',
+      budget: 'wallet/budget',
+      profile: 'auth/profile',
     }),
-    isAuthenticated() {
-      return !!this.$apolloHelpers.getToken()
-    },
-  },
-  mounted() {
-    const { jwt } = this.$route.query
-    if (jwt) this.dispatch(jwt)
-  },
-  methods: {
-    ...mapMutations({
-      saveScannedJournCoin: 'wallet/add',
-    }),
-    async dispatch(jwt) {
-      this.unknownQrCode = false
-      const { person, coin } = decode(jwt)
-      if (person) {
-        await this.$apolloHelpers.onLogin(jwt)
-        this.$router.push('/profile')
-      }
-      if (coin) {
-        this.saveScannedJournCoin(jwt)
-      }
-    },
   },
 }
 </script>

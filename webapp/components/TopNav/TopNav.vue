@@ -65,7 +65,7 @@ import MobileMenu from '~/components/MobileMenu/MobileMenu.vue'
 import Icon from '~/components/Icon/Icon.vue'
 
 export const links = [
-  { name: 'QR code scannen', to: '/' },
+  { name: 'JournCoins scannen', to: '/' },
   { name: 'Artikel wählen', to: '/article' },
 ]
 
