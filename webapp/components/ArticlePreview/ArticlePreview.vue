@@ -1,6 +1,6 @@
 <template>
   <section class="prose prose-lg pt-6 pb-8">
-    <h2>{{ article.title }}</h2>
+    <h3>{{ article.title }}</h3>
     <button
       v-if="alreadyBought(article)"
       class="float-right bg-blue-500 hover:bg-blue-700 text-white font-bold ml-4 py-2 px-4 rounded-full"
@@ -24,7 +24,7 @@
       <template #default="{ mutate, loading, error }">
         <button
           :disabled="loading"
-          class="float-right bg-blue-500 hover:bg-blue-700 text-white font-bold ml-4 py-2 px-4 rounded-full"
+          class="float-right bg-purple-500 hover:bg-purple-700 text-white font-bold ml-4 py-2 px-4 rounded-full"
           @click="mutate()"
         >
           Artikel kaufen

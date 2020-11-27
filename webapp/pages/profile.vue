@@ -22,7 +22,7 @@
                 <strong
                   >{{ data.profile.journCoins.length }} Artikel gekauft</strong
                 >
-                und ein Budget von noch
+                und noch ein Budget von
                 <strong>{{ budget }} JournCoins</strong> übrig.
               </p>
               <section>

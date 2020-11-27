@@ -43,8 +43,12 @@ export default {
         await this.$store.dispatch('auth/login', jwt)
       }
       if (coin) {
-        this.addCoin(jwt)
-        this.$emit('valid-journcoin')
+        try {
+          const newCoin = await this.$store.dispatch('wallet/earn', jwt)
+          if (newCoin) this.$emit('valid-journcoin')
+        } catch (e) {
+          this.$emit('invalid-journcoin')
+        }
       }
     },
   },
