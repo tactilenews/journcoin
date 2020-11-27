@@ -3,17 +3,38 @@
     <div class="flex flex-col items-center">
       <article class="prose prose-lg py-6">
         <h2>Dein JournCoin wurde gescanned!</h2>
-
-        <p>Bislang hast du {{ budget }} JournCoins gescanned.</p>
+        <div
+          style="
+            width: 100%;
+            height: 0;
+            padding-bottom: 56%;
+            position: relative;
+          "
+        >
+          <iframe
+            src="https://giphy.com/embed/JpG2A9P3dPHXaTYrwu"
+            width="100%"
+            height="100%"
+            style="position: absolute"
+            frameBorder="0"
+            class="giphy-embed"
+            allowFullScreen
+          ></iframe>
+        </div>
+        <p class="text-xs text-right">
+          <a href="https://giphy.com/gifs/money-make-it-rain-JpG2A9P3dPHXaTYrwu"
+            >via GIPHY</a
+          >
+        </p>
+        <section>
+          <h2>Was möchtest du jetzt tun?</h2>
+          <p>
+            Bislang hast du <strong>{{ budget }} JournCoins</strong> gescannt.
+          </p>
+        </section>
       </article>
     </div>
-
     <template #footer>
-      <div class="flex flex-col items-center">
-        <div class="prose prose-lg py-6">
-          <h2>Was möchtest du jetzt tun?</h2>
-        </div>
-      </div>
       <Navigation :links="links" />
     </template>
   </PageWrapper>
