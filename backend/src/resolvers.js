@@ -1,18 +1,6 @@
 import { delegateToSchema } from '@graphql-tools/delegate';
 
 export default (subschema) => ({
-  Article: {
-    bought: {
-      selectionSet: '{ journCoins { owner { id } } }',
-      resolve: (article, args, context) => {
-        const ownerIds = article.journCoins.map((coin) => coin.owner.id);
-        return ownerIds.includes(context.person.id);
-      }
-    },
-    text: {
-      selectionSet: '{ journCoins { owner { id } } }',
-    },
-  },
   Query: {
     hello: () => 'Hello',
     profile: (parent, args, context, info) => delegateToSchema({
@@ -51,5 +39,31 @@ export default (subschema) => ({
       context,
       info,
     }),
+  },
+  Article: {
+    bought: {
+      selectionSet: '{ journCoins { owner { id } } }',
+      resolve: (article, args, context) => {
+        const ownerIds = article.journCoins.map((coin) => coin.owner.id);
+        return ownerIds.includes(context.person.id);
+      },
+    },
+    text: {
+      selectionSet: '{ journCoins { owner { id } } }',
+    },
+    revenues: {
+      selectionSet: '{ journCoins { token } }',
+      resolve: (article) => article.journCoins.length,
+    },
+  },
+  Person: {
+    revenues: {
+      selectionSet: '{ articles { journCoins { token } } }',
+      resolve: (person) => person.articles.reduce((a, b) => a + b.journCoins.length, 0),
+    },
+    expenses: {
+      selectionSet: '{ journCoins { article { id } } }',
+      resolve: (person) => new Set(person.journCoins.map((coin) => coin.article.id)).size,
+    },
   },
 });

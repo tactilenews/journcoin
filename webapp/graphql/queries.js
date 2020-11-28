@@ -14,13 +14,6 @@ export const READ = gql`
       author {
         name
       }
-      journCoins {
-        id
-        owner {
-          id
-          name
-        }
-      }
     }
   }
 `
@@ -42,23 +35,12 @@ export const PROFILE = gql`
     profile {
       id
       name
+      expenses
+      revenues
       articles {
         id
+        revenues
         title
-        slug
-        teaser
-        journCoins {
-          token
-        }
-      }
-      journCoins {
-        token
-        article {
-          id
-          title
-          slug
-          teaser
-        }
       }
     }
   }

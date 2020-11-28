@@ -15,12 +15,10 @@
                   geschrieben</strong
                 >
                 und dadurch insgesamt
-                <strong
-                  >{{ earned(data.profile.articles) }} JournCoins
-                  verdient</strong
+                <strong>{{ data.profile.revenues }} JournCoins verdient</strong
                 >. Außerdem hast du schon
                 <strong
-                  >{{ data.profile.journCoins.length }} Artikel gekauft</strong
+                  >{{ data.profile.expenses }} JournCoins ausgegeben</strong
                 >
                 und noch ein Budget von
                 <strong>{{ budget }} JournCoins</strong> übrig.
@@ -37,7 +35,7 @@
                     :key="article.slug"
                   >
                     <td>{{ article.title }}</td>
-                    <td>{{ article.journCoins.length }}</td>
+                    <td>{{ article.revenues }}</td>
                   </tr>
                 </table>
               </section>
@@ -75,13 +73,6 @@ export default {
       budget: 'wallet/budget',
       profile: 'auth/profile',
     }),
-  },
-  methods: {
-    earned(articles) {
-      return articles
-        .map((article) => article.journCoins.length)
-        .reduce((a, b) => a + b, 0)
-    },
   },
 }
 </script>

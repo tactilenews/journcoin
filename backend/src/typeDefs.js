@@ -13,6 +13,12 @@ type Mutation {
 
 extend type Article {
   bought: Boolean
+  revenues: Int
+}
+
+extend type Person {
+  expenses: Int
+  revenues: Int
 }
 `;
 export default typeDefs;
