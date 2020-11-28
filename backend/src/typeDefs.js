@@ -10,5 +10,9 @@ type Query {
 type Mutation {
   buy(id: ID!, token: String!): JournCoin
 }
+
+extend type Article {
+  bought: Boolean
+}
 `;
 export default typeDefs;

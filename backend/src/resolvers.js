@@ -1,6 +1,18 @@
 import { delegateToSchema } from '@graphql-tools/delegate';
 
 export default (subschema) => ({
+  Article: {
+    bought: {
+      selectionSet: '{ journCoins { owner { id } } }',
+      resolve: (article, args, context) => {
+        const ownerIds = article.journCoins.map((coin) => coin.owner.id);
+        return ownerIds.includes(context.person.id);
+      }
+    },
+    text: {
+      selectionSet: '{ journCoins { owner { id } } }',
+    },
+  },
   Query: {
     hello: () => 'Hello',
     profile: (parent, args, context, info) => delegateToSchema({

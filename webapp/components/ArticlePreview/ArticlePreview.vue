@@ -2,7 +2,7 @@
   <section class="prose prose-lg pt-6 pb-8">
     <h3>{{ article.title }}</h3>
     <button
-      v-if="alreadyBought(article)"
+      v-if="article.bought"
       class="float-right bg-blue-500 hover:bg-blue-700 text-white font-bold ml-4 py-2 px-4 rounded-full"
       @click="$emit('read', article.slug)"
     >
@@ -64,10 +64,6 @@ export default {
     ...mapMutations({
       pay: 'wallet/pay',
     }),
-    alreadyBought(article) {
-      const buyerIds = article.journCoins.map((coin) => coin.owner.id)
-      return buyerIds.includes(this.profile.id)
-    },
     handlePayment({ data }) {
       const {
         buy: { token },
