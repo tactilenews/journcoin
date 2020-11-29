@@ -41,7 +41,7 @@ describe('QrCodeScanner', () => {
   describe('shallowMount', () => {
     beforeEach(() => {
       actions = {
-        'wallet/earn': jest.fn().mockResolvedValue(true),
+        'auth/earn': jest.fn().mockResolvedValue(true),
         'auth/login': jest.fn(),
       }
     })
@@ -86,9 +86,9 @@ describe('QrCodeScanner', () => {
           expect(wrapper.emitted()).toEqual({ 'valid-journcoin': [[]] })
         })
 
-        it('calls $store.dispatch(`wallet/earn`)', async () => {
+        it('calls $store.dispatch(`auth/earn`)', async () => {
           await qrCodeScanned()
-          expect(actions['wallet/earn']).toHaveBeenCalledWith(
+          expect(actions['auth/earn']).toHaveBeenCalledWith(
             expect.any(Object),
             'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb2luIjp7ImlkIjoiQk5EOExhSnBUeUZEU2ZXL2hhZ1BvUmp3Z29jdHBxR2pyN2FpTlprWjh2a1krNU9vRVBha0I5R0lHOFRLZTh3NWJNeTRUTXdJbHhqZTdyU0s2OENWeWc9PSJ9LCJpYXQiOjE2MDY0NDI0OTV9.sMzhqndAIt9vivIlyO9e-ju3cHbldgPTvHh29Yzk7Ig'
           )
@@ -96,9 +96,7 @@ describe('QrCodeScanner', () => {
 
         describe('if journcoin has been used already', () => {
           beforeEach(() => {
-            actions['wallet/earn'] = jest
-              .fn()
-              .mockRejectedValue('Already taken')
+            actions['auth/earn'] = jest.fn().mockRejectedValue('Already taken')
           })
 
           it('emits `invalid-journcoin`', async () => {
@@ -109,7 +107,7 @@ describe('QrCodeScanner', () => {
 
         describe('if journcoin is in localStorage alrady', () => {
           beforeEach(() => {
-            actions['wallet/earn'] = jest.fn().mockResolvedValue(false)
+            actions['auth/earn'] = jest.fn().mockResolvedValue(false)
           })
 
           it('emits no event', async () => {

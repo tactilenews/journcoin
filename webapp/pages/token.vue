@@ -2,7 +2,7 @@
   <PageWrapper>
     <div class="flex flex-col items-center">
       <article class="prose prose-lg py-6">
-        <h2>Dein JournCoin wurde gescannt!</h2>
+        <h2>Dein JournCoin wurde eingelöst!</h2>
         <div
           style="
             width: 100%;
@@ -29,7 +29,8 @@
         <section>
           <h2>Was möchtest du jetzt tun?</h2>
           <p>
-            Bislang hast du <strong>{{ budget }} JournCoins</strong> gescannt.
+            Bislang hast du ein Budget von
+            <strong>{{ budget }} JournCoins</strong>.
           </p>
         </section>
       </article>
@@ -57,7 +58,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      budget: 'wallet/budget',
+      budget: 'auth/budget',
     }),
   },
 }

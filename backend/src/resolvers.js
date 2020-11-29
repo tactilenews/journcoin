@@ -1,8 +1,35 @@
 import { delegateToSchema } from '@graphql-tools/delegate';
+import { ApolloError, gql } from 'apollo-server';
 
-export default (subschema) => ({
+const AVAILABLE_COIN = gql`
+query($id: ID!) {
+  journCoins(
+    stage: DRAFT
+    locales: en
+    where: { article: null, owner: { id: $id } }
+    first: 1
+  ) {
+    id
+  }
+}
+`;
+
+const CHECK_ALREADY_BOUGHT = gql`
+query($article: ArticleWhereInput!, $id: ID!) {
+  articlesConnection(
+    stage: DRAFT
+    locales: en
+    where: { AND: [$article, { journCoins_some: { owner: { id: $id } } }] }
+  ) {
+    aggregate {
+      count
+    }
+  }
+}
+`;
+
+export default ({ subschema, executor }) => ({
   Query: {
-    hello: () => 'Hello',
     profile: (parent, args, context, info) => delegateToSchema({
       schema: subschema,
       operation: 'query',
@@ -13,26 +40,47 @@ export default (subschema) => ({
       context,
       info,
     }),
-    read: (parent, args, context, info) => delegateToSchema({
-      schema: subschema,
-      operation: 'query',
-      fieldName: 'article',
-      args: {
-        where: { slug: args.slug },
-      },
-      context,
-      info,
-    }),
+
   },
   Mutation: {
-    buy: (parent, args, context, info) => delegateToSchema({
+    buy: async (parent, args, context, info) => {
+      const [
+        { data: { journCoins } },
+        { data: { articlesConnection } },
+      ] = await Promise.all([
+        executor({
+          document: AVAILABLE_COIN,
+          variables: { id: context.person.id },
+        }),
+        executor({
+          document: CHECK_ALREADY_BOUGHT,
+          variables: { article: args.article, id: context.person.id },
+        }),
+      ]);
+      const { aggregate: { count } } = articlesConnection;
+      if (count > 0) throw new ApolloError('You already bought this article!');
+      const [availableCoin] = journCoins;
+      if (!availableCoin) throw new ApolloError('You have run out of JournCoins!');
+
+      return delegateToSchema({
+        schema: subschema,
+        operation: 'mutation',
+        fieldName: 'updateJournCoin',
+        args: {
+          where: { ...availableCoin },
+          data: { article: { connect: args.article } }
+        },
+        context,
+        info,
+      });
+    },
+    redeem: (parent, args, context, info) => delegateToSchema({
       schema: subschema,
       operation: 'mutation',
       fieldName: 'createJournCoin',
       args: {
         data: {
           token: args.token,
-          article: { connect: { id: args.id } },
           owner: { connect: { id: context.person.id } },
         },
       },
@@ -63,7 +111,12 @@ export default (subschema) => ({
     },
     expenses: {
       selectionSet: '{ journCoins { article { id } } }',
-      resolve: (person) => new Set(person.journCoins.map((coin) => coin.article.id)).size,
+      resolve: (person) => {
+        let articles = person
+          .journCoins.map((coin) => coin.article)
+          .filter(article => article)
+        return new Set(articles.map(article => article.id)).size
+      },
     },
   },
 });
