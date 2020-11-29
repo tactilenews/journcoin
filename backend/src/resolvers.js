@@ -68,7 +68,7 @@ export default ({ subschema, executor }) => ({
         fieldName: 'updateJournCoin',
         args: {
           where: { ...availableCoin },
-          data: { article: { connect: args.article } }
+          data: { article: { connect: args.article } },
         },
         context,
         info,
@@ -112,10 +112,10 @@ export default ({ subschema, executor }) => ({
     expenses: {
       selectionSet: '{ journCoins { article { id } } }',
       resolve: (person) => {
-        let articles = person
+        const articles = person
           .journCoins.map((coin) => coin.article)
-          .filter(article => article)
-        return new Set(articles.map(article => article.id)).size
+          .filter((article) => article);
+        return new Set(articles.map((article) => article.id)).size;
       },
     },
   },

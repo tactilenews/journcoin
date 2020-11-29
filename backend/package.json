@@ -31,6 +31,7 @@
     "universal-hot-reload": "^3.3.9"
   },
   "devDependencies": {
+    "@graphql-tools/mock": "^7.0.0",
     "apollo-server-testing": "^2.19.0",
     "babel-eslint": "^10.1.0",
     "eslint": "^7.14.0",

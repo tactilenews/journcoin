@@ -96,23 +96,12 @@ describe('QrCodeScanner', () => {
 
         describe('if journcoin has been used already', () => {
           beforeEach(() => {
-            actions['auth/earn'] = jest.fn().mockRejectedValue('Already taken')
+            actions['auth/earn'] = jest.fn().mockResolvedValue(null)
           })
 
           it('emits `invalid-journcoin`', async () => {
             const wrapper = await qrCodeScanned()
             expect(wrapper.emitted()).toEqual({ 'invalid-journcoin': [[]] })
-          })
-        })
-
-        describe('if journcoin is in localStorage alrady', () => {
-          beforeEach(() => {
-            actions['auth/earn'] = jest.fn().mockResolvedValue(false)
-          })
-
-          it('emits no event', async () => {
-            const wrapper = await qrCodeScanned()
-            expect(wrapper.emitted()).toEqual({})
           })
         })
       })

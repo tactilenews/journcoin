@@ -4,7 +4,9 @@ export default {
   title: 'QR Code Scanner',
   component: QrCodeScanner,
   argTypes: {
-    parse: { action: 'parse' },
+    'invalid-journcoin': { action: 'invalid-journcoin' },
+    'valid-journcoin': { action: 'valid-journcoin' },
+    'unknown-qr-code': { action: 'unknown-qr-code' },
   },
 }
 

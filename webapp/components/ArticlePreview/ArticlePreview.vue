@@ -53,7 +53,6 @@ export default {
   computed: {
     ...mapGetters({
       budget: 'auth/budget',
-      profile: 'auth/profile',
     }),
     variables() {
       return { slug: this.article.slug }
