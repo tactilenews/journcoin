@@ -13,15 +13,27 @@ beforeEach(async () => {
 });
 
 describe('queries', () => {
-  describe('HELLO', () => {
-    const HELLO = gql`query { hello }`;
+  describe('PEOPLE', () => {
+    const PEOPLE = gql`
+      {
+        people(stage: DRAFT, locales: en) {
+          id
+          name
+        }
+      }
+    `;
 
-    it('returns string `hello`', async () => {
-      await expect(query({ query: HELLO }))
+    it('returns array of `Person`', async () => {
+      await expect(query({ query: PEOPLE }))
         .resolves
         .toMatchObject({
           errors: undefined,
-          data: { hello: 'Hello' },
+          data: {
+            people: [
+              { id: expect.any(String), name: 'Hello World' },
+              { id: expect.any(String), name: 'Hello World' },
+            ],
+          },
         });
     });
   });

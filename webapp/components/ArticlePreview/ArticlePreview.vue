@@ -6,7 +6,7 @@
       class="float-right bg-blue-500 hover:bg-blue-700 text-white font-bold ml-4 py-2 px-4 rounded-full"
       @click="$emit('read', article.slug)"
     >
-      Kostenlos lesen
+      Jetzt lesen
     </button>
     <button
       v-else-if="budget <= 0"
@@ -52,24 +52,22 @@ export default {
   },
   computed: {
     ...mapGetters({
-      budget: 'wallet/budget',
-      nextCoin: 'wallet/nextCoin',
-      profile: 'auth/profile',
+      budget: 'auth/budget',
     }),
     variables() {
-      return { id: this.article.id, token: this.nextCoin }
+      return { slug: this.article.slug }
     },
   },
   methods: {
     ...mapMutations({
-      pay: 'wallet/pay',
+      setProfile: 'auth/setProfile',
     }),
     handlePayment({ data }) {
       const {
-        buy: { token },
+        buy: { owner, article },
       } = data
-      this.pay(token)
-      this.$emit('read', this.article.slug)
+      this.setProfile(owner)
+      this.$emit('read', article.slug)
     },
   },
 }

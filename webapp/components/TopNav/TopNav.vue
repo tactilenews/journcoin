@@ -35,7 +35,7 @@
                 aria-label="Notifications"
               >
                 <Icon name="journcoin" />
-                <span class="text-xl">{{ available }}</span>
+                <span class="text-xl">{{ budget }}</span>
               </button>
 
               <!-- Profile dropdown -->
@@ -87,7 +87,7 @@ export default {
   }),
   computed: {
     ...mapGetters({
-      available: 'wallet/budget',
+      budget: 'auth/budget',
     }),
   },
 }

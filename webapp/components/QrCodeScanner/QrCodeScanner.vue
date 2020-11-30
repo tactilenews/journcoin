@@ -7,7 +7,6 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
 import jwtDecode from 'jwt-decode'
 
 export const qrCodePayload = (decodedString, hostUrl) => {
@@ -29,9 +28,6 @@ export default {
     if (jwt) await this.dispatch(jwt)
   },
   methods: {
-    ...mapMutations({
-      addCoin: 'wallet/add',
-    }),
     async onDecode(decodedString) {
       const jwt = qrCodePayload(decodedString, new URL(this.$config.URL))
       if (!jwt) return this.$emit('unknown-qr-code', decodedString)
@@ -43,12 +39,9 @@ export default {
         await this.$store.dispatch('auth/login', jwt)
       }
       if (coin) {
-        try {
-          const newCoin = await this.$store.dispatch('wallet/earn', jwt)
-          if (newCoin) this.$emit('valid-journcoin')
-        } catch (e) {
-          this.$emit('invalid-journcoin')
-        }
+        const newCoin = await this.$store.dispatch('auth/earn', jwt)
+        if (newCoin) return this.$emit('valid-journcoin')
+        this.$emit('invalid-journcoin')
       }
     },
   },

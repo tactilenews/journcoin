@@ -1,11 +1,28 @@
 import gql from 'graphql-tag'
+import { profileFragment, articleFragment } from './queries.js'
 
 export const BUY = gql`
-  mutation($id: ID!, $token: String!) {
-    buy(id: $id, token: $token) {
+  mutation($slug: String!) {
+    buy(article: { slug: $slug }) {
+      id
       token
+      owner {
+        ${profileFragment}
+      }
       article {
-        id
+        ${articleFragment}
+      }
+    }
+  }
+`
+
+export const REDEEM = gql`
+  mutation($token: String!) {
+    redeem(token: $token) {
+      id
+      token
+      owner {
+        ${profileFragment}
       }
     }
   }

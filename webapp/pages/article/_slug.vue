@@ -11,14 +11,14 @@
           <div v-if="error" class="error apollo">An error occurred</div>
           <template v-else-if="data">
             <article class="prose prose-lg py-6">
-              <h2>{{ data.read.title }}</h2>
-              <p>{{ data.read.teaser }}</p>
+              <h2>{{ data.article.title }}</h2>
+              <p>{{ data.article.teaser }}</p>
               <VueQrcode
-                :value="data.read.originalURL"
+                :value="data.article.originalURL"
                 :options="{ width: 200 }"
               ></VueQrcode>
               <!--eslint-disable-next-line vue/no-v-html -->
-              <div v-html="$md.render(data.read.text.markdown)"></div>
+              <div v-html="$md.render(data.article.text.markdown)"></div>
             </article>
           </template>
         </div>

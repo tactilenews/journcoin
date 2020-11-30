@@ -16,23 +16,26 @@ const isBuyer = rule({ cache: 'strict' })(
 const permissions = shield({
   Query: {
     '*': deny,
-    read: allow,
     profile: isAuthenticated,
-    hello: allow,
     articles: allow,
     article: allow,
     people: allow,
     person: allow,
     journCoins: allow,
+    articlesConnection: allow,
   },
   Mutation: {
     '*': deny,
+    updateArticle: isAuthenticated,
+    createJournCoin: isAuthenticated,
     buy: isAuthenticated,
+    redeem: isAuthenticated,
   },
   Article: {
     text: and(isAuthenticated, isBuyer),
   },
 }, {
+  allowExternalErrors: true,
   fallbackRule: allow,
 });
 
