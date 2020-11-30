@@ -1,12 +1,13 @@
 import jwt from 'jsonwebtoken';
 import { JWT_SECRET } from './config';
 
-export default function context({ req }) {
+export default async function context({ req }) {
   let token = req.headers.authorization || '';
   token = token.replace('Bearer ', '');
   try {
-    return jwt.verify(token, JWT_SECRET);
+    const decoded = await jwt.verify(token, JWT_SECRET);
+    return { ...decoded, jwt };
   } catch (e) {
-    return {};
+    return { jwt };
   }
 }
