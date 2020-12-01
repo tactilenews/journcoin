@@ -1,8 +1,8 @@
 import { delegateToSchema } from '@graphql-tools/delegate';
-import { ApolloError, gql } from 'apollo-server';
+import { UserInputError, gql } from 'apollo-server';
 
-const AVAILABLE_COIN = gql`
-query($id: ID!) {
+const BEFORE_BUY_CHECKS = gql`
+query($article: ArticleWhereInput!, $id: ID!) {
   journCoins(
     stage: DRAFT
     locales: en
@@ -11,11 +11,6 @@ query($id: ID!) {
   ) {
     id
   }
-}
-`;
-
-const CHECK_ALREADY_BOUGHT = gql`
-query($article: ArticleWhereInput!, $id: ID!) {
   articlesConnection(
     stage: DRAFT
     locales: en
@@ -44,23 +39,14 @@ export default ({ subschema, executor }) => ({
   },
   Mutation: {
     buy: async (parent, args, context, info) => {
-      const [
-        { data: { journCoins } },
-        { data: { articlesConnection } },
-      ] = await Promise.all([
-        executor({
-          document: AVAILABLE_COIN,
-          variables: { id: context.person.id },
-        }),
-        executor({
-          document: CHECK_ALREADY_BOUGHT,
-          variables: { article: args.article, id: context.person.id },
-        }),
-      ]);
+      const { data: { journCoins, articlesConnection } } = await executor({
+        document: BEFORE_BUY_CHECKS,
+        variables: { article: args.article, id: context.person.id },
+      });
       const { aggregate: { count } } = articlesConnection;
-      if (count > 0) throw new ApolloError('You already bought this article!');
+      if (count > 0) throw new UserInputError('You already bought this article!');
       const [availableCoin] = journCoins;
-      if (!availableCoin) throw new ApolloError('You have run out of JournCoins!');
+      if (!availableCoin) throw new UserInputError('You have run out of JournCoins!');
 
       return delegateToSchema({
         schema: subschema,
