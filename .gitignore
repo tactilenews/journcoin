@@ -1,2 +1,3 @@
 # Local Netlify folder
 .netlify
+git-crypt-key
